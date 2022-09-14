@@ -1,0 +1,21 @@
+[package]
+name = "kvs"
+version = "0.1.0"
+authors = ["Guo Zhi Hao <335247945@qq.com>"]
+description = "A key-value store"
+edition = "2021"
+
+[dev-dependencies]
+assert_cmd = "0.12.2"
+predicates = "2.1.1"
+
+[dependencies]
+clap = { version = "3.2.21", features = ["derive"]}
+stderr = "0.8.0"
+
+[lib]
+test = true
+
+[[bin]]
+name = "kvs" # the bin name
+test = false # not do the test
