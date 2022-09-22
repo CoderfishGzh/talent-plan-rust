@@ -1,40 +1,37 @@
 #[macro_use]
 extern crate stderr;
-
-use clap::{Arg, Command};
+use kvs::command::{create_arg_matchs, get, rm, set};
+use kvs::errors::Result;
+use kvs::KvStore;
+use std::env::current_dir;
 use std::process;
 
-fn main() {
-    let m = Command::new(env!("CARGO_CRATE_NAME"))
-        .author(env!("CARGO_PKG_AUTHORS"))
-        .version(env!("CARGO_PKG_VERSION"))
-        .about(env!("CARGO_PKG_DESCRIPTION"))
-        .subcommand(
-            Command::new("set")
-                .arg(Arg::new("KEY").takes_value(true))
-                .arg(Arg::new("VALUE").takes_value(true)),
-        )
-        .subcommand(Command::new("get").arg(Arg::new("VALUE").takes_value(true)))
-        .subcommand(Command::new("rm").arg(Arg::new("KEY").takes_value(true)))
-        .arg(Arg::new("V"))
-        .get_matches();
-
+fn main() -> Result<()> {
+    let m = create_arg_matchs();
+    let kvs = KvStore::open(current_dir()?)?;
     match m.subcommand() {
-        Some(("set", _sub_set)) => {
-            err!("unimplemented\n");
-            process::exit(1);
+        Some(("set", sub_set)) => {
+            if let Err(e) = set(kvs, sub_set) {
+                err!("{:?}", e);
+                process::exit(1);
+            }
+            process::exit(0);
         }
-        Some(("get", _sub_get)) => {
-            err!("unimplemented\n");
-            process::exit(1);
+        Some(("get", arg)) => {
+            get(kvs, arg)?;
         }
-        Some(("rm", _)) => {
-            err!("unimplemented\n");
-            process::exit(1);
+        Some(("rm", arg)) => {
+            if let Err(_) = rm(kvs, arg) {
+                print!("Key not found");
+                process::exit(1);
+            }
+            process::exit(0);
         }
         _ => {
             err!(env!("CARGO_PKG_VERSION"));
             process::exit(1);
         }
     }
+
+    Ok(())
 }
