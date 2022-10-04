@@ -38,7 +38,7 @@ pub fn get(mut kvs: KvStore, arg: &ArgMatches) -> Result<()> {
             }
         },
         Err(e) => {
-            println!("Key not found");
+            println!("Key not found{:?}", e);
             Ok(())
         }
     };

@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate stderr;
+// use kvs::command::{create_arg_matchs, get, rm, set};
 use kvs::command::{create_arg_matchs, get, rm, set};
 use kvs::errors::Result;
 use kvs::KvStore;
@@ -18,7 +19,9 @@ fn main() -> Result<()> {
             process::exit(0);
         }
         Some(("get", arg)) => {
-            get(kvs, arg)?;
+            if let Err(e) = get(kvs, arg) {
+                panic!("{:?}", e);
+            }
         }
         Some(("rm", arg)) => {
             if let Err(_) = rm(kvs, arg) {
@@ -33,5 +36,6 @@ fn main() -> Result<()> {
         }
     }
 
+    // test()?;
     Ok(())
 }
