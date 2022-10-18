@@ -6,10 +6,12 @@ description = "A key-value store"
 edition = "2021"
 
 [dev-dependencies]
-assert_cmd = "0.12.2"
+assert_cmd = "2.0.4"
 predicates = "2.1.1"
 tempfile = "3.0.7"
 walkdir = "2.2.7"
+criterion = "0.4.0"
+rand = "0.8.5"
 
 [dependencies]
 clap = { version = "3.2.21", features = ["derive"]}
@@ -23,8 +25,16 @@ tempfile = "3.0.7"
 walkdir = "2.2.7"
 
 [lib]
-test = true
+test = true # test the lib
 
 [[bin]]
 name = "kvs" # the bin name
 test = false # not do the test
+
+[[bin]]
+name = "kvs-server"
+test = false
+
+[[bin]]
+name = "kvs-client"
+test = false

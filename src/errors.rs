@@ -1,6 +1,7 @@
 use crate::WalkDir;
 use std::io;
 use std::io::Error;
+use std::net::AddrParseError;
 use std::string::FromUtf8Error;
 pub type Result<T> = std::result::Result<T, KvsError>;
 
@@ -26,6 +27,12 @@ pub enum KvsError {
 
     #[fail(display = "{}", _0)]
     File(#[cause] FileError),
+
+    #[fail(display = "Unknown command error")]
+    UnKnownCommandError,
+
+    #[fail(display = "invaild addr")]
+    AddrError,
 }
 
 #[derive(Debug, Fail)]
@@ -70,5 +77,11 @@ impl From<serde_json::Error> for KvsError {
 impl From<walkdir::Error> for KvsError {
     fn from(e: walkdir::Error) -> Self {
         KvsError::File(FileError::WalkError(e))
+    }
+}
+
+impl From<AddrParseError> for KvsError {
+    fn from(_: AddrParseError) -> Self {
+        KvsError::AddrError
     }
 }

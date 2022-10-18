@@ -36,6 +36,5 @@ fn main() -> Result<()> {
         }
     }
 
-    // test()?;
     Ok(())
 }
