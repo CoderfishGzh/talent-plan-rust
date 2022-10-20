@@ -33,6 +33,9 @@ pub enum KvsError {
 
     #[fail(display = "invaild addr")]
     AddrError,
+
+    #[fail(display = "must choose the true engine")]
+    ErrorEngine,
 }
 
 #[derive(Debug, Fail)]

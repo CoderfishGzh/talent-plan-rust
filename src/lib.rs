@@ -1,4 +1,5 @@
 pub mod command;
+pub mod engine;
 mod entry;
 pub mod errors;
 mod file;
